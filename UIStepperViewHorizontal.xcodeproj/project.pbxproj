@@ -7,17 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		650406261EBD0FAE0009115F /* ViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650406251EBD0FAE0009115F /* ViewController1.swift */; };
+		650406281EBD10330009115F /* DUIStepperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650406271EBD10330009115F /* DUIStepperView.swift */; };
 		65CC51BA1EBBFA88006065DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CC51B91EBBFA88006065DE /* AppDelegate.swift */; };
-		65CC51BC1EBBFA88006065DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CC51BB1EBBFA88006065DE /* ViewController.swift */; };
 		65CC51BF1EBBFA88006065DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CC51BD1EBBFA88006065DE /* Main.storyboard */; };
 		65CC51C11EBBFA88006065DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CC51C01EBBFA88006065DE /* Assets.xcassets */; };
 		65CC51C41EBBFA88006065DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CC51C21EBBFA88006065DE /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		650406251EBD0FAE0009115F /* ViewController1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController1.swift; sourceTree = "<group>"; };
+		650406271EBD10330009115F /* DUIStepperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DUIStepperView.swift; sourceTree = "<group>"; };
 		65CC51B61EBBFA88006065DE /* UIStepperViewHorizontal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIStepperViewHorizontal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CC51B91EBBFA88006065DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65CC51BB1EBBFA88006065DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		65CC51BE1EBBFA88006065DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		65CC51C01EBBFA88006065DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65CC51C31EBBFA88006065DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -55,11 +57,12 @@
 			isa = PBXGroup;
 			children = (
 				65CC51B91EBBFA88006065DE /* AppDelegate.swift */,
-				65CC51BB1EBBFA88006065DE /* ViewController.swift */,
 				65CC51BD1EBBFA88006065DE /* Main.storyboard */,
 				65CC51C01EBBFA88006065DE /* Assets.xcassets */,
 				65CC51C21EBBFA88006065DE /* LaunchScreen.storyboard */,
 				65CC51C51EBBFA88006065DE /* Info.plist */,
+				650406251EBD0FAE0009115F /* ViewController1.swift */,
+				650406271EBD10330009115F /* DUIStepperView.swift */,
 			);
 			path = UIStepperViewHorizontal;
 			sourceTree = "<group>";
@@ -96,6 +99,7 @@
 				TargetAttributes = {
 					65CC51B51EBBFA88006065DE = {
 						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = KNGETVX987;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -136,7 +140,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65CC51BC1EBBFA88006065DE /* ViewController.swift in Sources */,
+				650406281EBD10330009115F /* DUIStepperView.swift in Sources */,
+				650406261EBD0FAE0009115F /* ViewController1.swift in Sources */,
 				65CC51BA1EBBFA88006065DE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,6 +267,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KNGETVX987;
 				INFOPLIST_FILE = UIStepperViewHorizontal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsp.systameta.UIStepperViewHorizontal;
@@ -274,6 +280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KNGETVX987;
 				INFOPLIST_FILE = UIStepperViewHorizontal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsp.systameta.UIStepperViewHorizontal;
@@ -301,6 +308,7 @@
 				65CC51CA1EBBFA88006065DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
