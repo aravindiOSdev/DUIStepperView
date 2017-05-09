@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 
-enum StepState : Int{
-    case Active = 1
-    case Completed = 2
-    case Normal = 3
+enum StepState : String{
+    case Normal = "1"
+    case Active = "2"
+    case Completed = "3"
 }
 
 fileprivate protocol StepViewTappedDelegate{
@@ -23,7 +23,7 @@ fileprivate protocol StepViewTappedDelegate{
 class DUIStepView: UIView {
     
     private let tappedRecognizer : UITapGestureRecognizer = UITapGestureRecognizer()
-    
+    var config : Dictionary<String,String>?
     var imageViewForState : UIImageView?
     fileprivate var stepViewTappedDelegate :StepViewTappedDelegate?
     var state : StepState! = .Normal{
@@ -31,7 +31,7 @@ class DUIStepView: UIView {
             switch state! {
             case .Active :
                 UIView.animate(withDuration: 0.75, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-                    self.imageViewForState?.image = UIImage(named: "active_step_image")
+                    self.imageViewForState?.image = UIImage(named: self.config![self.state.rawValue]!)
                     if let image = self.imageViewForState?.image{
                         self.layer.transform = CATransform3DMakeScale(image.size.height / self.frame.size.height, image.size.width / self.frame.size.width, 1)
                     }
@@ -42,7 +42,7 @@ class DUIStepView: UIView {
             case .Completed :
                 UIView.animate(withDuration: 0.75, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
                     self.layer.transform = CATransform3DMakeScale(1, 1, 1)
-                    self.imageViewForState?.image = UIImage(named: "check_green")
+                    self.imageViewForState?.image = UIImage(named: self.config![self.state.rawValue]!)
                     if let image = self.imageViewForState?.image{
                         self.layer.transform = CATransform3DMakeScale(self.frame.size.height / image.size.height , self.frame.size.width / image.size.width , 1)
                     }
@@ -61,26 +61,6 @@ class DUIStepView: UIView {
                     
                 })
                 break
-//            case .Issue :
-//                UIView.animate(withDuration: 0.75, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-//                    self.imageViewForState?.image = nil
-//                    self.imageViewForState?.backgroundColor = UIColor.red
-//                    self.layer.transform = CATransform3DMakeScale(self.frame.size.height / self.frame.size.height, self.frame.size.width / self.frame.size.width, 1)
-//                }
-//                    , completion: { (completed) in
-//                        
-//                })
-//                break
-//            default:
-//                UIView.animate(withDuration: 0.75, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: .curveEaseInOut, animations: {
-//                    self.imageViewForState?.image = nil
-//                    self.imageViewForState?.backgroundColor = UIColor.lightGray
-//                    self.layer.transform = CATransform3DMakeScale(self.frame.size.height / self.frame.size.height, self.frame.size.width / self.frame.size.width, 1)
-//                }
-//            , completion: { (completed) in
-//                
-//            })
-//                break
             }
         }
     }
@@ -89,6 +69,18 @@ class DUIStepView: UIView {
         get{
             return CAShapeLayer.self
         }
+    }
+    
+    init(frame:CGRect, confi : Dictionary<String,String>) {
+        super.init(frame: frame)
+        self.config = confi
+        self.setStepView()
+        let path = UIBezierPath()
+        path.addArc(withCenter: CGPoint(x: self.bounds.midX, y: self.bounds.midY) , radius: frame.size.width / 2, startAngle: CGFloat(0), endAngle: CGFloat(Double.pi * 2), clockwise: false)
+        (layer as! CAShapeLayer).path = path.cgPath
+        tappedRecognizer.addTarget(self, action: #selector(DUIStepView.tapped))
+        self.addGestureRecognizer(tappedRecognizer)
+
     }
     
     override init(frame: CGRect) {
@@ -114,7 +106,12 @@ class DUIStepView: UIView {
             imageViewForState = UIImageView(frame: frame)
             imageViewForState?.backgroundColor = UIColor.white
             imageViewForState?.layer.cornerRadius = frame.size.height / 2
-            imageViewForState?.image = UIImage(named: "check_green")
+            if config![self.state.rawValue] != nil
+            { imageViewForState?.image = UIImage(named: config![self.state.rawValue]!) }
+            else{
+                imageViewForState?.image = nil
+            imageViewForState?.backgroundColor = UIColor.lightGray
+            }
             addSubview(imageViewForState!)
         }
     }
@@ -132,7 +129,7 @@ class DUIStepView: UIView {
 class DUIStepperProgressBarView: UIView {
     var color: UIColor!{
         didSet{
-            setNeedsDisplay()
+//            setNeedsDisplay()
         }
     }
     override class var layerClass : AnyClass{
@@ -143,11 +140,14 @@ class DUIStepperProgressBarView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        backgroundColor = UIColor.clear
+        self.contentMode = .redraw
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        backgroundColor = UIColor.clear
+        self.contentMode = .redraw
     }
     
     override func draw(_ rect: CGRect) {
@@ -170,46 +170,83 @@ class DUIStepperProgressBarView: UIView {
     
 }
 
-protocol DUIStepperViewDelegate {
+@objc protocol DUIStepperViewDelegate {
     func stepSelected(step : Int)
-    func stepViewConfig(step : Int, stepperView: DUIStepperView)
+    func stepViewConfig(step : Int, stepperView: DUIStepperView) -> Dictionary<String,String>
+    func noOfSteps() -> Int
 }
 
 
 @IBDesignable class DUIStepperView: UIView , StepViewTappedDelegate{
     
-    @IBInspectable var noOfSteps : NSNumber! = 5{
+    var configs : Array<Dictionary<String,String>> = Array<Dictionary<String,String>>()
+    
+    @IBInspectable var noOfSteps : NSNumber! = 2{
         didSet{
-            stepsView.removeAll()
-            setUpStepsView()
-            for (index,item) in stepsView.enumerated(){
-                item.tag = index
-                self.addSubview(item)
+            if let _ = stepDelegate{
+                stepsView.forEach { (view) in
+                    view.removeFromSuperview()
+                }
+                stepsView.removeAll()
+                setUpStepsView()
+                for (index,item) in stepsView.enumerated(){
+                    item.tag = index
+                    self.addSubview(item)
+                }
+                setNeedsDisplay()
             }
-            setNeedsDisplay()
+            
         }
     }
+    private var numberOfSteps : NSNumber!
     let pad : CGFloat = 32.0
-    @IBInspectable var progressViewColorTint : UIColor = UIColor.lightGray{
+    var progressViewColorTint : UIColor = UIColor.lightGray{
         didSet{
             progressBarView.color = progressViewColorTint
         }
     }
-    private var progressBarView = DUIStepperProgressBarView()
+    private var progressBarView : DUIStepperProgressBarView!
     private var stepsView : [DUIStepView] = [DUIStepView]()
     private var equiDistant : CGFloat = 0.0
 
-    var stepDelegate : DUIStepperViewDelegate?
+    var stepDelegate : DUIStepperViewDelegate? {
+        didSet{
+            if let _ = stepDelegate{
+                numberOfSteps = NSNumber(integerLiteral: stepDelegate!.noOfSteps())
+                for item in 1...numberOfSteps.intValue{
+                    configs.append(stepDelegate!.stepViewConfig(step: item-1, stepperView: self))
+                }
+                noOfSteps = numberOfSteps
+            }
+        }
+    }
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        progressBarView.color = UIColor.lightGray
+        if let _ =  progressBarView{
+            progressBarView.removeFromSuperview()
+            progressBarView = DUIStepperProgressBarView()
+            progressBarView.color = UIColor.lightGray
+            progressBarView.setNeedsDisplay()
+        }else{
+            progressBarView = DUIStepperProgressBarView()
+            progressBarView.color = UIColor.lightGray
+            progressBarView.setNeedsDisplay()
+        }
         self.addSubview(progressBarView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        progressBarView.color = UIColor.lightGray
+        if let _ =  progressBarView{
+            progressBarView.removeFromSuperview()
+            progressBarView = DUIStepperProgressBarView()
+            progressBarView.color = UIColor.lightGray
+        }else{
+            progressBarView = DUIStepperProgressBarView()
+            progressBarView.color = UIColor.lightGray
+        }
         self.addSubview(progressBarView)
     }
     
@@ -218,6 +255,7 @@ protocol DUIStepperViewDelegate {
         super.draw(rect)
         progressBarView.frame = CGRect(origin: CGPoint(x: pad, y : rect.midY), size: CGSize(width: rect.size.width - (pad * 2), height: 2))
         equiDistant = CGFloat(Int(progressBarView.frame.size.width) / (noOfSteps.intValue - 1))
+        progressBarView.color = UIColor.lightGray
         progressBarView.setNeedsDisplay()
         for (index,item) in stepsView.enumerated(){
             if index == 0{
@@ -235,8 +273,8 @@ protocol DUIStepperViewDelegate {
     }
     
     func setUpStepsView() {
-        for _ in 0..<noOfSteps.intValue {
-            let view = DUIStepView(frame:CGRect(x: 0, y: 0, width: 21, height: 21))
+        for item in 0..<noOfSteps.intValue {
+            let view = DUIStepView(frame:CGRect(x: 0, y: 0, width: 21, height: 21), confi : configs[item])
             view.stepViewTappedDelegate = self
             stepsView.append(view)
         }

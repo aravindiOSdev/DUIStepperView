@@ -29,9 +29,6 @@
                                     <constraint firstAttribute="height" constant="55" id="Vbq-1A-efc"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="progressViewColorTint">
-                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="noOfSteps">
                                         <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
