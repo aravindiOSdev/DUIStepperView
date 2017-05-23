@@ -1,7 +1,11 @@
 # DUIStepperView
 Stepper View implementation in swift
 
-Step titles yet to be added. [Titles will added in bottom of steps]
+NOTE:
+1. State images need to be added
+2. Step titles yet to be added. [Titles will added in bottom of steps]
+
+Just 85% work done!
 
 
 ![Alt text](/../master/Screen%20Shot%202017-05-23%20at%2011.48.12%20AM.png?raw=true)
