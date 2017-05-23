@@ -20,7 +20,7 @@ class ViewController1: UIViewController,DUIStepperViewDelegate {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.perform(#selector(ViewController1.updateStatus), with: nil, afterDelay: 3.0)
+//        self.perform(#selector(ViewController1.updateStatus), with: nil, afterDelay: 3.0)
     }
     
     func updateStatus(){
